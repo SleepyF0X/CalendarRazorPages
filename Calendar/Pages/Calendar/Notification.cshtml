@@ -1,0 +1,133 @@
+﻿@page
+@model NotificationModel
+@{
+}
+@{
+    var i = 0;
+    int routeLastMonth;
+    int routeLastYear;
+    if (Model.Month == 1)
+    {
+        routeLastYear = Model.Year - 1;
+        routeLastMonth = 12;
+    }
+    else
+    {
+        routeLastMonth = Model.Month - 1;
+        routeLastYear = Model.Year;
+    }
+    int routeNextMonth;
+    int routeNextYear;
+    if (Model.Month == 12)
+    {
+        routeNextYear = Model.Year + 1;
+        routeNextMonth = 1;
+    }
+    else
+    {
+        routeNextMonth = Model.Month + 1;
+        routeNextYear = Model.Year;
+    }
+}
+<link rel="stylesheet" href="~/css/calendar/index.css" />
+<div class="d-flex justify-content-center">
+    <div class="w-50 d-flex flex-column">
+        <div class="d-flex justify-content-around mb-2">
+            <a asp-route-year="@routeLastYear" asp-route-month="@routeLastMonth" asp-route-day="@Model.Day"><button type="button" class="btn btn-primary">Last month</button></a>
+            <h1>@Model.Year @Model.GetMonthName()</h1>
+            <a asp-route-year="@routeNextYear" asp-route-month="@routeNextMonth" asp-route-day="@Model.Day"><button type="button" class="btn btn-primary">Next month</button></a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Mo</th>
+                    <th scope="col" class="text-center">Tu</th>
+                    <th scope="col" class="text-center">We</th>
+                    <th scope="col" class="text-center">Th</th>
+                    <th scope="col" class="text-center">Fr</th>
+                    <th scope="col" class="text-center">St</th>
+                    <th scope="col" class="text-center">Su</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (var date in Model.GetCalendar())
+                    {
+                        @if (i != 7)
+                        {
+                            if (date.Day == Model.Day && date.Month == Model.Month)
+                            {
+                                <td class="text-center" style="background-color: blueviolet"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                            }
+                            else
+                            {
+                                <td class="text-center"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                            }
+                            i++;
+                        }
+                        else
+                        {
+                        @:</tr><tr>
+                            if (date.Day == Model.Day && date.Month == Model.Month)
+                            {
+                                <td class="text-center" style="background-color: blueviolet"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                            }
+                            else
+                            {
+                                <td class="text-center"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                            }
+
+                            i = 1;
+                        }
+                    }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="d-flex flex-wrap">
+    @foreach (var notificate in Model.Notifications)
+    {
+        <div class="card text-white bg-primary m-3" style="max-width: 20rem; min-width: 10rem;">
+            <div class="card-header d-flex justify-content-between">
+                <div>Notification</div>
+                <form method="post">
+                    <input type="submit" class="btn btn-danger btn-sm" asp-page-handler="Delete" asp-route-notificationId="@notificate.Id" asp-route-year="@Model.Year" asp-route-month="@Model.Month" asp-route-day="@Model.Day" value="x">
+                </form>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@notificate.Date.ToString("MM/dd/yy H:mm")</h4>
+                <p class="card-text">@notificate.Description</p>
+            </div>
+        </div>
+    }
+</div>
+<div class="d-flex justify-content-center">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="NotificationViewModel.Hours" class="control-label">Hours</label>
+            <select asp-for="NotificationViewModel.Hours" class="form-control" asp-items="ViewBag.TeacherId">
+                @for (int hour = 0; hour <= 24; hour++)
+                {
+                    <option>@hour</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="NotificationViewModel.Minutes" class="control-label">Minutes</label>
+            <select asp-for="NotificationViewModel.Minutes" class="form-control" asp-items="ViewBag.TeacherId">
+                @for (int minute = 0; minute <= 60; minute += 5)
+                {
+                    <option>@minute</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="NotificationViewModel.Description" class="control-label">Description</label>
+            <input type="text" step="300" asp-for="NotificationViewModel.Description" class="form-control"></input>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
