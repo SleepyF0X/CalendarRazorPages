@@ -19,6 +19,7 @@ namespace Calendar.Pages.Calendar
         public int Day { get; set; }
 
         public IQueryable<Notification> Notifications;
+        public IQueryable<Notification> MonthNotifications;
         public NotificationModel(ApplicationDbContext context)
         {
             _context = context;
@@ -31,6 +32,7 @@ namespace Calendar.Pages.Calendar
                 return NotFound();
             }
             Notifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month && n.Date.Day == Day);
+            MonthNotifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month);
             return Page();
         }
         [BindProperty] 

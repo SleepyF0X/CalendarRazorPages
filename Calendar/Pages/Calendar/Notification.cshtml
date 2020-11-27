@@ -57,11 +57,35 @@
                         {
                             if (date.Day == Model.Day && date.Month == Model.Month)
                             {
-                                <td class="text-center" style="background-color: blueviolet"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                                <td class="text-center" style="background-color: blueviolet">
+                                    <div class="d-flex justify-content-right">
+                                        <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
+                                            @date.Day
+                                        </a>
+                                        @if (Model.MonthNotifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
+                                        {
+                                            <span class="badge badge-pill badge-info ml-1">
+                                                @Model.MonthNotifications.Count(n => n.Date.Day.Equals(date.Day))
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
                             }
                             else
                             {
-                                <td class="text-center"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-right">
+                                        <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
+                                            @date.Day
+                                        </a>
+                                        @if (Model.MonthNotifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
+                                        {
+                                            <span class="badge badge-pill badge-info ml-1">
+                                                @Model.MonthNotifications.Count(n => n.Date.Day.Equals(date.Day))
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
                             }
                             i++;
                         }
@@ -70,11 +94,35 @@
                         @:</tr><tr>
                             if (date.Day == Model.Day && date.Month == Model.Month)
                             {
-                                <td class="text-center" style="background-color: blueviolet"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                                <td class="text-center" style="background-color: blueviolet">
+                                    <div class="d-flex justify-content-right">
+                                        <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
+                                            @date.Day
+                                        </a>
+                                        @if (Model.MonthNotifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
+                                        {
+                                            <span class="badge badge-pill badge-info ml-1">
+                                                @Model.MonthNotifications.Count(n => n.Date.Day.Equals(date.Day))
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
                             }
                             else
                             {
-                                <td class="text-center"><a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">@date.Day</a></td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-right">
+                                        <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
+                                            @date.Day
+                                        </a>
+                                        @if (Model.MonthNotifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
+                                        {
+                                            <span class="badge badge-pill badge-info ml-1">
+                                                @Model.MonthNotifications.Count(n => n.Date.Day.Equals(date.Day))
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
                             }
 
                             i = 1;

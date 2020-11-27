@@ -12,9 +12,10 @@ namespace Calendar.Pages.Calendar
 {
     public class IndexModel : PageModel
     {
-        public int Year;
-        public int Month;
+        public int Year{ get; set; }
+        public int Month{ get; set; }
         private ApplicationDbContext _context;
+        public IQueryable<Notification> Notifications { get; set; }
         public IndexModel(ApplicationDbContext context)
         {
             _context = context;
@@ -37,6 +38,7 @@ namespace Calendar.Pages.Calendar
                 Year = intYear;
                 Month = intMonth;
             }
+            Notifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month);
             return Page();
         }
 
