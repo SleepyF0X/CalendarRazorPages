@@ -12,32 +12,30 @@ namespace Calendar.Pages.Calendar
 {
     public class IndexModel : PageModel
     {
+        private ApplicationDbContext _context;
+
         public int Year{ get; set; }
         public int Month{ get; set; }
-        private ApplicationDbContext _context;
+        public IEnumerable<DateTime> Calendar { get; set; }
         public IQueryable<Notification> Notifications { get; set; }
+
         public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
         public IActionResult OnGet(string year, string? month)
         {
-            var intMonth = Convert.ToInt32(month);
-            var intYear = Convert.ToInt32(year);
+            ParseRouteParams(year,month);
             if (year == null || month == null)
             {
                 Year = DateTime.Now.Year;
                 Month = DateTime.Now.Month;
             }
-            else if (intMonth > 12||intMonth<1)
+            else if (Month > 12||Month<1)
             {
                 return NotFound();
             }
-            else
-            {
-                Year = intYear;
-                Month = intMonth;
-            }
+            Calendar = GetCalendar();
             Notifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month);
             return Page();
         }
@@ -58,6 +56,13 @@ namespace Calendar.Pages.Calendar
         public string GetMonthName()
         {
             return CultureInfo.GetCultureInfo("en").DateTimeFormat.GetMonthName(Month);
+        }
+        private void ParseRouteParams(string year, string month)
+        {
+            var intMonth = Convert.ToInt32(month);
+            var intYear = Convert.ToInt32(year);
+            Year = intYear;
+            Month = intMonth;
         }
     }
 }

@@ -14,12 +14,14 @@ namespace Calendar.Pages.Calendar
     public class NotificationModel : PageModel
     {
         private ApplicationDbContext _context;
+
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
-
+        public IEnumerable<DateTime> Calendar { get; set; }
         public IQueryable<Notification> Notifications;
         public IQueryable<Notification> MonthNotifications;
+
         public NotificationModel(ApplicationDbContext context)
         {
             _context = context;
@@ -27,9 +29,14 @@ namespace Calendar.Pages.Calendar
         public IActionResult OnGet(string year, string month, string day)
         {
             ParseRouteParams(year, month,day);
-            if (year == null || month == null || day == null||Month > 12||Month<1||!GetCalendar().Select(c => c.Day).Contains(Day)||Day<1)
+            Calendar = GetCalendar();
+            if (year == null || month == null || day == null||Month > 12||Month<1||Day<1)
             {
                 return NotFound();
+            }
+            if (!Calendar.Select(c => c.Day).Contains(Day))
+            {
+                Day = Calendar.Max(d=>d.Day);
             }
             Notifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month && n.Date.Day == Day);
             MonthNotifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month);

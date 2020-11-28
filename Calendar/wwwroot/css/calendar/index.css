@@ -3,10 +3,13 @@
 td:hover {
     background-color: dimgrey;
 }
+a {
+    color: white;
+}
 td a {
     width: 100%;
     display: block;
-    color: white;
+    color: unset;
     text-decoration: none;
     height: 100%;
 }

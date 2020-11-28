@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Routing
 @model IndexModel
 @{
-    var i = 0;
+    var i = 1;
     int routeLastMonth;
     int routeLastYear;
     if (Model.Month == 1)
@@ -50,12 +50,10 @@
             </thead>
             <tbody>
                 <tr>
-                    @foreach (var date in Model.GetCalendar())
+                    @foreach (var date in Model.Calendar)
                     {
-                        @if (i != 7)
-                        {
-                            <td class="text-center">
-                                <div class="d-flex justify-content-right">
+                        <td class="text-center">
+                                <div class="d-flex justify-content-right" @(date.Month != Model.Month ? "style=color:gray" : "")>
                                     <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
                                         @date.Day
                                     </a>
@@ -67,29 +65,33 @@
                                     }
                                 </div>
                             </td>
+                            @if (i == 7)
+                            {
+                                i = 0;
+                                @:</tr><tr>
+                            }
                             i++;
                         }
-                        else
-                        {
-                        @:</tr><tr>
-                            <td class="text-center">
-                                <div class="d-flex justify-content-right">
-                                    <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
-                                        @date.Day
-                                    </a>
-                                    @if (Model.Notifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
-                                    {
-                                        <span class="badge badge-pill badge-info ml-1">
-                                            @Model.Notifications.Count(n => n.Date.Day.Equals(date.Day))
-                                        </span>
-                                    }
-                                </div>
-                            </td>
-                            i = 1;
-                        }
-                    }
-            </tbody>
-        </table>
+                            @*else
+                                {
+                                @:</tr><tr>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-right">
+                                            <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
+                                                @date.Day
+                                            </a>
+                                            @if (Model.Notifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
+                                            {
+                                                <span class="badge badge-pill badge-info ml-1">
+                                                    @Model.Notifications.Count(n => n.Date.Day.Equals(date.Day))
+                                                </span>
+                                            }
+                                        </div>
+                                    </td>
+                                    i = 1;
+                                }*@
+                    </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
