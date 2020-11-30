@@ -12,18 +12,18 @@ namespace Calendar.Pages.Calendar
 {
     public class IndexModel : PageModel
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public int Year{ get; set; }
-        public int Month{ get; set; }
-        public IEnumerable<DateTime> Calendar { get; set; }
-        public IQueryable<Notification> Notifications { get; set; }
+        public int Year{ get; private set; }
+        public int Month{ get; private set; }
+        public IEnumerable<DateTime> Calendar { get; private set; }
+        public IQueryable<Notification> Notifications { get; private set; }
 
         public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
-        public IActionResult OnGet(string year, string? month)
+        public IActionResult OnGet(string year, string month)
         {
             ParseRouteParams(year,month);
             if (year == null || month == null)
@@ -36,20 +36,22 @@ namespace Calendar.Pages.Calendar
                 return NotFound();
             }
             Calendar = GetCalendar();
-            Notifications = _context.Notifications.Where(n => n.Date.Year == Year && n.Date.Month == Month);
+            Notifications = _context.Notifications.Where(n => n.Date.Year.Equals(Year) && n.Date.Month.Equals(Month));
             return Page();
         }
 
-        public IEnumerable<DateTime> GetCalendar()
+        #region suply methods
+
+        private IEnumerable<DateTime> GetCalendar()
         {
             var days = new List<DateTime>();
             var startMonth = new DateTime(Year, Month, 1);
             var startDayOfWeek = (int)startMonth.DayOfWeek;
             if (startDayOfWeek == 0) { startDayOfWeek = 7; }
-            var CalendarDays = startMonth.AddDays(1 - startDayOfWeek);
+            var calendarDays = startMonth.AddDays(1 - startDayOfWeek);
             for (var i=0; i < 42; i++)
             {
-                days.Add(CalendarDays.AddDays(i));
+                days.Add(calendarDays.AddDays(i));
             }
             return days;
         }
@@ -64,5 +66,7 @@ namespace Calendar.Pages.Calendar
             Year = intYear;
             Month = intMonth;
         }
+
+        #endregion
     }
 }

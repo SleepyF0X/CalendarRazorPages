@@ -58,10 +58,10 @@
                                 <a class="link" asp-page="Notification" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day">
                                     @date.Day
                                 </a>
-                                @if (Model.MonthNotifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
+                                @if (Model.Notifications.Any(n => n.Date.Day.Equals(date.Day) && n.Date.Month.Equals(date.Month) && n.Date.Year.Equals(date.Year)))
                                 {
                                     <span class="badge badge-pill badge-info ml-1">
-                                        @Model.MonthNotifications.Count(n => n.Date.Day.Equals(date.Day))
+                                        @Model.Notifications.Count(n => n.Date.Day.Equals(date.Day))
                                     </span>
                                 }
                             </div>
@@ -78,7 +78,7 @@
     </div>
 </div>
 <div class="d-flex flex-wrap">
-    @foreach (var notificate in Model.Notifications)
+    @foreach (var notificate in Model.DayNotifications)
     {
         <div class="card text-white bg-primary m-3" style="max-width: 20rem; min-width: 10rem;">
             <div class="card-header d-flex justify-content-between">
@@ -120,7 +120,7 @@
             <input type="text" step="300" asp-for="NotificationViewModel.Description" class="form-control"></input>
         </div>
         <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" asp-page-handler="Create" asp-route-year="@Model.Year" asp-route-month="@Model.Month" asp-route-day="@Model.Day" value="Create" class="btn btn-primary" />
         </div>
     </form>
 </div>
