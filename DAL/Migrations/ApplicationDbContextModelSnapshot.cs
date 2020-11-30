@@ -16,24 +16,10 @@ namespace DAL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("DAL.Entites.Calendar", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Calendars");
-                });
-
             modelBuilder.Entity("DAL.Entites.Notification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("CalendarId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
@@ -44,26 +30,15 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CalendarId");
-
                     b.ToTable("Notifications");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fdb6e4f5-3120-4ef0-92ca-641380d403cc"),
-                            Date = new DateTime(2020, 11, 27, 4, 26, 53, 10, DateTimeKind.Local).AddTicks(2079),
+                            Id = new Guid("6b8de14d-5afe-4e1a-a693-7b24f8302ca7"),
+                            Date = new DateTime(2020, 11, 30, 19, 58, 49, 275, DateTimeKind.Local).AddTicks(524),
                             Description = "asa"
                         });
-                });
-
-            modelBuilder.Entity("DAL.Entites.Notification", b =>
-                {
-                    b.HasOne("DAL.Entites.Calendar", "Calendar")
-                        .WithMany()
-                        .HasForeignKey("CalendarId");
-
-                    b.Navigation("Calendar");
                 });
 #pragma warning restore 612, 618
         }

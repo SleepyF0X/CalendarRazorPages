@@ -10,7 +10,6 @@ namespace DAL
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Calendar> Calendars { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options){}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
