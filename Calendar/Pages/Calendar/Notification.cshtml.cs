@@ -34,9 +34,9 @@ namespace Calendar.Pages.Calendar
                 return NotFound();
             }
             Calendar = GetCalendar();
-            if (!Calendar.Select(c => c.Day).Contains(Day))
+            if (!Calendar.Where(c=>c.Month.Equals(Month)).Select(c => c.Day).Contains(Day))
             {
-                Day = Calendar.Min(d => d.Day);
+                Day = Calendar.Where(c=>c.Month.Equals(Month)).Min(d => d.Day);
             }
             Notifications = _context.Notifications.Where(n => n.Date.Year.Equals(Year) && n.Date.Month.Equals(Month));
             DayNotifications = Notifications.Where(n => n.Date.Day.Equals(Day));
